@@ -58,13 +58,17 @@
 					    </div>
 					    
 					    <div class="field">
-					      <div class="ui primary button cripty">Cripty</div>
+					      <div class="ui primary button cripty" data-tooltip="Type your source and password then run Cripty">Cripty</div>
 					    </div>
 					    
 					    <div class="field">
-					      <div class="ui green button test">Test</div>
+					      <div class="ui green button test" data-tooltip="Cripty then run test">Test</div>
 					    </div>
-
+						<div class="field">
+						    <button class="circular ui icon button github" data-tooltip="Fork me on Github">
+							  <i class="icon github alternate"></i>
+							</button>
+					    </div>
 					  </div>
 					</div>
 
@@ -139,6 +143,8 @@
 
 			( function(){
 
+				var github = "https://github.com/LeonardoCiaccio/Cripty";
+
 				var request = '!function(){var script=document.createElement("script");script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),script.onload=function(){script.parentNode.removeChild(script);var pass=prompt("Password :"),protected=atob(document.getElementById("protected").innerHTML);try{var bytes=CryptoJS.AES.decrypt(protected,pass),plaintext=bytes.toString(CryptoJS.enc.Utf8);try{plaintext?eval(plaintext):alert("Bad password")}catch(a){alert("Bad Protected Source !")}}catch(a){alert("Bad password")}},document.body.append(script)}();';
 
 				var encryptB64 = function( text, pass ){
@@ -188,6 +194,12 @@
 				    newWindow.document.write( html );
 				    
 				    newWindow.document.close();
+
+				} );
+
+				$( ".button.github" ).click( function(){
+
+					window.open( github );
 
 				} );
 

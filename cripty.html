@@ -56,11 +56,19 @@
 					    <div class="field">
 					      <input id="password" type="password" placeholder="Password">
 					    </div>
-					    
+
+					    <div class="field">
+					      <div class="ui buttons">
+					        <div class="ui button mode active" data-mode="js">JS</div>
+					        <div class="or"></div>
+					        <div class="ui button mode" data-mode="html">HTML</div>
+					      </div>
+					    </div>
+
 					    <div class="field">
 					      <div class="ui primary button cripty" data-tooltip="Type your source and password then run Cripty">Cripty</div>
 					    </div>
-					    
+
 					    <div class="field">
 					      <div class="ui green button test" data-tooltip="Cripty then run test">Test</div>
 					    </div>
@@ -145,13 +153,25 @@
 
 				var github = "https://github.com/LeonardoCiaccio/Cripty";
 
-				var request = '!function(){var script=document.createElement("script");script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),script.onload=function(){script.parentNode.removeChild(script);var pass=prompt("Password :"),protected=atob(document.getElementById("protected").innerHTML);try{var bytes=CryptoJS.AES.decrypt(protected,pass),plaintext=bytes.toString(CryptoJS.enc.Utf8);try{plaintext?eval(plaintext):alert("Bad password")}catch(a){alert("Bad Protected Source !")}}catch(a){alert("Bad password")}},document.body.append(script)}();';
+				var request = '!function(){var script=document.createElement("script");script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),script.onload=function(){script.parentNode.removeChild(script);var pass=prompt("Password :"),enc=atob(document.getElementById("protected").innerHTML);try{var bytes=CryptoJS.AES.decrypt(enc,pass),plaintext=bytes.toString(CryptoJS.enc.Utf8);try{plaintext?eval(plaintext):alert("Bad password")}catch(a){alert("Bad Protected Source !")}}catch(a){alert("Bad password")}},document.body.append(script)}();';
+
+				var requestHTML = '!function(){var script=document.createElement("script");script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),script.onload=function(){script.parentNode.removeChild(script);var pass=prompt("Password :"),enc=atob(document.getElementById("protected").innerHTML);try{var bytes=CryptoJS.AES.decrypt(enc,pass),plaintext=bytes.toString(CryptoJS.enc.Utf8);try{plaintext?(document.open(),document.write(plaintext),document.close()):alert("Bad password")}catch(a){alert("Bad Protected Source !")}}catch(a){alert("Bad password")}},document.body.append(script)}();';
 
 				var encryptB64 = function( text, pass ){
 
 					return btoa( CryptoJS.AES.encrypt( text, pass ).toString() );
 
 				};
+
+				var currentMode = "js";
+
+				$( ".mode" ).click( function(){
+
+					$( ".mode" ).removeClass( "active" );
+					$( this ).addClass( "active" );
+					currentMode = $( this ).data( "mode" );
+
+				} );
 
 				$( ".cripty" ).click( function(){
 
@@ -165,13 +185,15 @@
 
 					var gen = encryptB64( source, pass )
 
+					,req = currentMode === "html" ? requestHTML : request
+
 					,cripty = [
 
 						"<div id='protected' style='display:none'>" + gen + "</div>"
-						
+
 						,
 
-						"<script>" + request + "<\/script>"
+						"<script>" + req + "<\/script>"
 
 					];
 
@@ -187,7 +209,7 @@
 
 					var newWindow = window.open( "" );
 
-				    var html = "<html><head><title>Cripty | Test</title></head><body>" + source + "</body></html>"
+				    var html = "<html><head><title>Cripty | Test</title><\/head><body>" + source + "<\/body><\/html>"
 
 				    newWindow.document.open();
 

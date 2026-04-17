@@ -86,9 +86,9 @@
       </div>
 
       <!-- Controls -->
-      <div class="flex flex-wrap items-center gap-3 mt-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
 
-        <div class="relative flex-1 min-w-[150px]">
+        <div class="relative w-48">
           <input
             id="password"
             type="password"
@@ -105,17 +105,19 @@
           </button>
         </div>
 
-        <button id="btnCripty" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
-          Cripty
-        </button>
+        <div class="flex items-center gap-2">
+          <button id="btnCripty" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+            Cripty
+          </button>
 
-        <button id="btnTest" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
-          Test
-        </button>
+          <button id="btnTest" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+            Test
+          </button>
 
-        <button id="btnCopy" class="px-3 py-1.5 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
-          Copy
-        </button>
+          <button id="btnCopy" class="px-3 py-1.5 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+            Copy
+          </button>
+        </div>
 
       </div>
     </div>

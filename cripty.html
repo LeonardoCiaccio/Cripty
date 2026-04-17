@@ -34,7 +34,7 @@
       <div class="flex items-center gap-3">
         <img src="imgs/128.png" class="w-10 h-10 rounded-full" alt="Cripty">
         <div>
-          <h1 class="text-2xl font-bold tracking-widest text-gray-900 dark:text-white">CRIPTY</h1>
+          <h1 class="text-2xl font-bold tracking-widest text-gray-900 dark:text-white">CRIPTY <span id="appVersion" class="text-sm font-normal font-mono text-gray-400 dark:text-zinc-500"></span></h1>
           <p class="text-xs text-gray-500 dark:text-zinc-400">Protect code with AES password encryption</p>
         </div>
       </div>
@@ -181,6 +181,10 @@
       alertModal.classList.add('flex');
     }
 
+    var VERSION            = '1.173';
+    var COPY_FEEDBACK_MS   = 1500;
+    var MODAL_FOCUS_DELAY  = 50;
+
     var REQUEST_JS   = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){eval(t);break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
     var REQUEST_HTML = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){document.open();document.write(t);document.close();break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
 
@@ -219,7 +223,6 @@
       badge.classList.remove('hidden');
     }
 
-    // Theme toggle
     var isDark = true;
     document.getElementById('themeToggle').addEventListener('click', function () {
       isDark = !isDark;
@@ -228,7 +231,6 @@
       document.getElementById('iconSun').classList.toggle('hidden', isDark);
     });
 
-    // Live badge + clear button visibility
     var sourceEl = document.getElementById('source');
     var btnClear = document.getElementById('btnClear');
     var btnSave  = document.getElementById('btnSave');
@@ -267,7 +269,6 @@
       document.getElementById('fileName').classList.remove('flex');
     });
 
-    // Save as HTML
     var saveModal    = document.getElementById('saveModal');
     var saveFileName = document.getElementById('saveFileName');
 
@@ -275,7 +276,7 @@
       saveFileName.value = 'cripty-output.html';
       saveModal.classList.remove('hidden');
       saveModal.classList.add('flex');
-      setTimeout(function () { saveFileName.select(); }, 50);
+      setTimeout(function () { saveFileName.select(); }, MODAL_FOCUS_DELAY);
     }
 
     function closeSaveModal() {
@@ -309,7 +310,6 @@
       if (e.target === saveModal) closeSaveModal();
     });
 
-    // Eye toggle
     document.getElementById('btnEye').addEventListener('click', function () {
       var pwdEl   = document.getElementById('password');
       var isHidden = pwdEl.type === 'password';
@@ -318,7 +318,6 @@
       document.getElementById('iconEyeSlash').classList.toggle('hidden', !isHidden);
     });
 
-    // Drag & drop
     var overlay  = document.getElementById('dropOverlay');
 
     sourceEl.addEventListener('dragover', function (e) {
@@ -341,8 +340,10 @@
       var reader = new FileReader();
       reader.onload = function (ev) {
         sourceEl.value = ev.target.result;
+        isCripted = false;
         updateBadge();
         syncClearBtn();
+        syncButtons();
         var fn = document.getElementById('fileName');
         document.getElementById('fileNameText').textContent = file.name;
         fn.classList.remove('hidden');
@@ -351,7 +352,6 @@
       reader.readAsText(file);
     });
 
-    // Cripty
     document.getElementById('btnCripty').addEventListener('click', function () {
       var pass   = document.getElementById('password').value.trim();
       var source = document.getElementById('source').value.trim();
@@ -380,7 +380,6 @@
       syncButtons();
     });
 
-    // Test
     document.getElementById('btnTest').addEventListener('click', function () {
       var source = document.getElementById('source').value.trim();
       if (!source) return;
@@ -390,7 +389,6 @@
       w.document.close();
     });
 
-    // Copy
     document.getElementById('btnCopy').addEventListener('click', function () {
       var source = document.getElementById('source').value;
       if (!source) return;
@@ -403,10 +401,11 @@
         setTimeout(function () {
           btn.textContent = 'Copy';
           btn.className = orig;
-        }, 1500);
+        }, COPY_FEEDBACK_MS);
       });
     });
 
+    document.getElementById('appVersion').textContent = 'v' + VERSION;
     updateBadge();
 
   })();

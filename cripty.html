@@ -1,268 +1,288 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
 
 <head>
-
-	<!-- Standard Meta -->
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-	<!-- Site Properties -->
-	<title>Cripty | JS and HTML Protector</title>
-
-	<link rel="icon" href="imgs/favicon.png" type="image/png" />
-
-
-	<!-- Standard and Custom Styles -->
-	<link rel="stylesheet" type="text/css"
-		href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
-
-	<style type="text/css">
-		body {
-
-			padding-top: 60px;
-
-		}
-	</style>
-
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Cripty | Code Protector</title>
+  <link rel="icon" href="imgs/favicon.png" type="image/png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
 </head>
 
-<body>
-
-	<div id="MAIN" class="main container transition hidden">
-
-		<div class="ui grid">
-
-			<div class="four wide column"></div>
-
-			<div class="eight wide column center aligned">
-
-				<h2 class="ui icon header">
-					<img src="imgs/128.png" class="ui circular image">
-					<div class="content">CRIPTY<div class="sub header">Protect JS and HTML content with password, AES
-							encryption !</div>
-					</div>
-				</h2>
-
-				<div class="ui form">
-					<div class="field">
-						<textarea rows="15" id="source" placeholder="alert( 'Hello World !!!' );"></textarea>
-					</div>
-					<div class="field">
-
-						<div class="fields">
-
-							<div class="field">
-								<input id="password" type="password" placeholder="Password">
-							</div>
-
-							<div class="field">
-								<div class="ui buttons">
-									<div class="ui button mode active" data-mode="js">JS</div>
-									<div class="or"></div>
-									<div class="ui button mode" data-mode="html">HTML</div>
-								</div>
-							</div>
-
-							<div class="field">
-								<div class="ui primary button cripty"
-									data-tooltip="Type your source and password then run Cripty">Cripty</div>
-							</div>
-
-							<div class="field">
-								<div class="ui green button test" data-tooltip="Cripty then run test">Test</div>
-							</div>
-							<div class="field">
-								<button class="circular ui icon button github" data-tooltip="Fork me on Github">
-									<i class="icon github alternate"></i>
-								</button>
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="four wide column"></div>
-
-			</div>
-
-		</div>
-
-		<!-- Standard and Custom Scripts -->
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
-
-		<script type="text/javascript">
-
-			/* To compress password request
-
-			( function(){
-
-				var script = document.createElement( 'script' );
-
-				script.setAttribute( 'src', 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js' );
-
-				script.onload = function(){
-
-					script.parentNode.removeChild( script );
-
-					var pass = prompt( 'Password :' )
-
-					,protected = atob( document.getElementById( 'protected' ).innerHTML );
-
-					try{
-
-						var bytes  = CryptoJS.AES.decrypt( protected, pass)
-
-						,plaintext = bytes.toString( CryptoJS.enc.Utf8 );
-					  
-					  try{
-					  	
-						if( !plaintext ){
-
-							alert( 'Bad password' );
-					    
-						}else{   
-								
-								eval( plaintext );
-
-							}
-					  
-					  }catch( e ){
-					  
-							alert( 'Bad Protected Source !' );
-					  
-					  }
-
-					}catch( e ){
-
-						alert( 'Bad password' );
-
-					}
-
-				};
-
-				document.body.append( script );
-
-			} )();
-
-			*/
-
-			(function () {
-
-				var github = "https://github.com/LeonardoCiaccio/Cripty";
-
-				var request = '!function(){var script=document.createElement("script");script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),script.onload=function(){script.parentNode.removeChild(script);var pass=prompt("Password :"),enc=atob(document.getElementById("protected").innerHTML);try{var bytes=CryptoJS.AES.decrypt(enc,pass),plaintext=bytes.toString(CryptoJS.enc.Utf8);try{plaintext?eval(plaintext):alert("Bad password")}catch(a){alert("Bad Protected Source !")}}catch(a){alert("Bad password")}},document.body.append(script)}();';
-
-				var requestHTML = '!function(){var script=document.createElement("script");script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),script.onload=function(){script.parentNode.removeChild(script);var pass=prompt("Password :"),enc=atob(document.getElementById("protected").innerHTML);try{var bytes=CryptoJS.AES.decrypt(enc,pass),plaintext=bytes.toString(CryptoJS.enc.Utf8);try{plaintext?(document.open(),document.write(plaintext),document.close()):alert("Bad password")}catch(a){alert("Bad Protected Source !")}}catch(a){alert("Bad password")}},document.body.append(script)}();';
-
-				var encryptB64 = function (text, pass) {
-
-					return btoa(CryptoJS.AES.encrypt(text, pass).toString());
-
-				};
-
-				var currentMode = "js";
-
-				$(".mode").click(function () {
-
-					$(".mode").removeClass("active");
-					$(this).addClass("active");
-					currentMode = $(this).data("mode");
-
-				});
-
-				$(".cripty").click(function () {
-
-					var pass = $("#password").val().trim()
-
-						, source = $("#source").val().trim();
-
-					if (!pass || pass === "") return alert("Password required !");
-
-					if (!source || source === "") return alert("Source required !");
-
-					var gen = encryptB64(source, pass)
-
-						, req = currentMode === "html" ? requestHTML : request
-
-						, cripty = [
-
-							"<div id='protected' style='display:none'>" + gen + "</div>"
-
-							,
-
-							"<script>" + req + "<\/script>"
-
-						];
-
-					$("#source").val(cripty.join(""));
-
-				});
-
-				$(".test").click(function () {
-
-					var source = $("#source").val().trim();
-
-					if (!source || source === "") return false;
-
-					var newWindow = window.open("");
-
-					var html = "<html><head><title>Cripty | Test</title><\/head><body>" + source + "<\/body><\/html>"
-
-					newWindow.document.open();
-
-					newWindow.document.write(html);
-
-					newWindow.document.close();
-
-				});
-
-				var sourceEl = document.getElementById("source");
-
-				sourceEl.addEventListener("dragover", function (e) {
-					e.preventDefault();
-				});
-
-				sourceEl.addEventListener("drop", function (e) {
-					e.preventDefault();
-					var file = e.dataTransfer.files[0];
-					if (!file) return;
-					var reader = new FileReader();
-					reader.onload = function (ev) {
-						$("#source").val(ev.target.result);
-					};
-					reader.readAsText(file);
-				});
-
-				$(".button.github").click(function () {
-
-					window.open(github);
-
-				});
-
-				window.onload = function () {
-
-					$("#MAIN").transition({
-
-						animation: "fade down"
-						,
-						onComplete: function () {
-
-							// --> TODO
-
-						}
-
-					});
-
-				};
-
-			})();
-
-		</script>
+<body class="bg-gray-100 dark:bg-zinc-950 min-h-screen flex items-center justify-center p-6 transition-colors duration-300">
+
+  <div class="w-full max-w-2xl">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3">
+        <img src="imgs/128.png" class="w-10 h-10 rounded-full" alt="Cripty">
+        <div>
+          <h1 class="text-2xl font-bold tracking-widest text-gray-900 dark:text-white">CRIPTY</h1>
+          <p class="text-xs text-gray-500 dark:text-zinc-400">Protect code with AES password encryption</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="modeBadge" class="text-xs px-2 py-1 rounded-full font-mono bg-gray-200 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400">auto</span>
+        <button id="themeToggle" class="p-2 rounded-md bg-gray-200 dark:bg-zinc-800 hover:bg-gray-300 dark:hover:bg-zinc-700 text-gray-600 dark:text-zinc-300 transition-colors" title="Toggle theme">
+        <svg id="iconSun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+        </svg>
+        <svg id="iconMoon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white dark:bg-zinc-900 rounded-md border border-gray-200 dark:border-zinc-800 p-6 shadow-xl">
+
+      <!-- Textarea + drop overlay -->
+      <div class="relative mb-1">
+        <textarea
+          id="source"
+          rows="14"
+          class="w-full bg-gray-50 dark:bg-zinc-800 border-2 border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-green-400 font-mono text-sm rounded-md p-[22px] resize-none outline-none placeholder-gray-400 dark:placeholder-zinc-600 focus:border-violet-500 dark:focus:border-violet-500 transition-colors duration-200"
+          placeholder="// Paste your JS or HTML here, or drop a file..."></textarea>
+        <button id="btnClear" class="hidden absolute top-2 right-2 p-1 rounded-md text-gray-400 dark:text-zinc-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Clear">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        <div id="dropOverlay" class="hidden absolute inset-0 rounded-md bg-violet-500/20 border-2 border-violet-500 pointer-events-none items-center justify-center">
+          <span class="text-violet-600 dark:text-violet-300 font-semibold text-lg">Drop file here</span>
+        </div>
+      </div>
+
+      <!-- File name label -->
+      <div id="fileName" class="hidden items-center gap-1 text-xs text-gray-400 dark:text-zinc-500 mb-4 mt-2">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <span id="fileNameText"></span>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex flex-wrap items-center gap-3 mt-4">
+
+        <div class="relative flex-1 min-w-[150px]">
+          <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md pl-4 pr-9 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 outline-none focus:border-violet-500 transition-colors">
+          <button id="btnEye" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors" title="Show/hide password">
+            <svg id="iconEye" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <svg id="iconEyeSlash" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>
+            </svg>
+          </button>
+        </div>
+
+        <button id="btnCripty" class="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-md transition-colors">
+          Cripty
+        </button>
+
+        <button id="btnTest" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-md transition-colors">
+          Test
+        </button>
+
+        <button id="btnCopy" class="px-4 py-2 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 text-sm font-semibold rounded-md transition-colors">
+          Copy
+        </button>
+
+        <a href="https://github.com/LeonardoCiaccio/Cripty" target="_blank" class="p-2 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 rounded-md transition-colors" title="Fork on GitHub">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-gray-400 dark:text-zinc-600 mt-6">AES encryption via CryptoJS &middot; All processing client-side</p>
+
+  </div>
+
+  <script>
+  (function () {
+
+    var REQUEST_JS   = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var p=prompt("Password :"),e=atob(document.getElementById("protected").innerHTML);try{var b=CryptoJS.AES.decrypt(e,p),t=b.toString(CryptoJS.enc.Utf8);try{t?eval(t):alert("Bad password")}catch(x){alert("Bad Protected Source !")}}catch(x){alert("Bad password")}},document.body.append(s)}();';
+    var REQUEST_HTML = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var p=prompt("Password :"),e=atob(document.getElementById("protected").innerHTML);try{var b=CryptoJS.AES.decrypt(e,p),t=b.toString(CryptoJS.enc.Utf8);try{t?(document.open(),document.write(t),document.close()):alert("Bad password")}catch(x){alert("Bad Protected Source !")}}catch(x){alert("Bad password")}},document.body.append(s)}();';
+
+    function encryptB64(text, pass) {
+      return btoa(CryptoJS.AES.encrypt(text, pass).toString());
+    }
+
+    function detectMode(source) {
+      var t = source.trimStart();
+      if (!t.startsWith('<')) return 'js';
+      if (/^<(!DOCTYPE|html|xml)/i.test(t)) return 'html-full';
+      return 'html-partial';
+    }
+
+    var BADGE_CLASSES = {
+      'auto':         'text-xs px-2 py-1 rounded-full font-mono bg-gray-200 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400',
+      'js':           'text-xs px-2 py-1 rounded-full font-mono bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300',
+      'html-full':    'text-xs px-2 py-1 rounded-full font-mono bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300',
+      'html-partial': 'text-xs px-2 py-1 rounded-full font-mono bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300'
+    };
+
+    var BADGE_LABELS = {
+      'auto':         'auto',
+      'js':           'JS',
+      'html-full':    'HTML page',
+      'html-partial': 'HTML snippet'
+    };
+
+    function updateBadge() {
+      var source = document.getElementById('source').value.trim();
+      var badge  = document.getElementById('modeBadge');
+      if (!source) { badge.classList.add('hidden'); return; }
+      var key = detectMode(source);
+      badge.textContent = BADGE_LABELS[key];
+      badge.className   = BADGE_CLASSES[key];
+      badge.classList.remove('hidden');
+    }
+
+    // Theme toggle
+    var isDark = true;
+    document.getElementById('themeToggle').addEventListener('click', function () {
+      isDark = !isDark;
+      document.documentElement.classList.toggle('dark', isDark);
+      document.getElementById('iconMoon').classList.toggle('hidden', !isDark);
+      document.getElementById('iconSun').classList.toggle('hidden', isDark);
+    });
+
+    // Live badge + clear button visibility
+    var sourceEl = document.getElementById('source');
+    var btnClear = document.getElementById('btnClear');
+
+    function syncClearBtn() {
+      btnClear.classList.toggle('hidden', !sourceEl.value);
+    }
+
+    sourceEl.addEventListener('input', function () {
+      updateBadge();
+      syncClearBtn();
+    });
+
+    btnClear.addEventListener('click', function () {
+      sourceEl.value = '';
+      updateBadge();
+      syncClearBtn();
+      document.getElementById('fileName').classList.add('hidden');
+      document.getElementById('fileName').classList.remove('flex');
+    });
+
+    // Eye toggle
+    document.getElementById('btnEye').addEventListener('click', function () {
+      var pwdEl   = document.getElementById('password');
+      var isHidden = pwdEl.type === 'password';
+      pwdEl.type = isHidden ? 'text' : 'password';
+      document.getElementById('iconEye').classList.toggle('hidden', isHidden);
+      document.getElementById('iconEyeSlash').classList.toggle('hidden', !isHidden);
+    });
+
+    // Drag & drop
+    var overlay  = document.getElementById('dropOverlay');
+
+    sourceEl.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    });
+
+    sourceEl.addEventListener('dragleave', function () {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+    });
+
+    sourceEl.addEventListener('drop', function (e) {
+      e.preventDefault();
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      var file = e.dataTransfer.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        sourceEl.value = ev.target.result;
+        updateBadge();
+        syncClearBtn();
+        var fn = document.getElementById('fileName');
+        document.getElementById('fileNameText').textContent = file.name;
+        fn.classList.remove('hidden');
+        fn.classList.add('flex');
+      };
+      reader.readAsText(file);
+    });
+
+    // Cripty
+    document.getElementById('btnCripty').addEventListener('click', function () {
+      var pass   = document.getElementById('password').value.trim();
+      var source = document.getElementById('source').value.trim();
+      if (!pass)   return alert('Password required!');
+      if (!source) return alert('Source required!');
+
+      var mode = detectMode(source);
+      var content, req;
+
+      if (mode === 'js') {
+        content = source;
+        req     = REQUEST_JS;
+      } else if (mode === 'html-full') {
+        content = source;
+        req     = REQUEST_HTML;
+      } else {
+        content = '<html><head><\/head><body>' + source + '<\/body><\/html>';
+        req     = REQUEST_HTML;
+      }
+
+      var gen = encryptB64(content, pass);
+      sourceEl.value = "<div id='protected' style='display:none'>" + gen + "<\/div><script>" + req + "<\/script>";
+      updateBadge();
+    });
+
+    // Test
+    document.getElementById('btnTest').addEventListener('click', function () {
+      var source = document.getElementById('source').value.trim();
+      if (!source) return;
+      var w = window.open('');
+      w.document.open();
+      w.document.write('<html><head><title>Cripty | Test<\/title><\/head><body>' + source + '<\/body><\/html>');
+      w.document.close();
+    });
+
+    // Copy
+    document.getElementById('btnCopy').addEventListener('click', function () {
+      var source = document.getElementById('source').value;
+      if (!source) return;
+      navigator.clipboard.writeText(source).then(function () {
+        var btn = document.getElementById('btnCopy');
+        var orig = btn.className;
+        btn.textContent = 'Copied!';
+        btn.classList.add('bg-emerald-600', 'text-white');
+        btn.classList.remove('bg-gray-200', 'dark:bg-zinc-700', 'text-gray-700', 'dark:text-zinc-200');
+        setTimeout(function () {
+          btn.textContent = 'Copy';
+          btn.className = orig;
+        }, 1500);
+      });
+    });
+
+    updateBadge();
+
+  })();
+  </script>
 
 </body>
-
 </html>

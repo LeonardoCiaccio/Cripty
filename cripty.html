@@ -59,7 +59,7 @@
         <textarea
           id="source"
           rows="14"
-          class="w-full bg-gray-50 dark:bg-zinc-800 border-2 border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-green-400 font-mono text-sm rounded-md p-[22px] resize-none outline-none placeholder-gray-400 dark:placeholder-zinc-600 focus:border-violet-500 dark:focus:border-violet-500 transition-colors duration-200"
+          class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-green-400 font-mono text-sm rounded-md p-[22px] resize-none outline-none placeholder-gray-400 dark:placeholder-zinc-600 focus:border-violet-500 dark:focus:border-violet-500 transition-colors duration-200"
           placeholder="// Paste your JS or HTML here, or drop a file..."></textarea>
         <button id="btnClear" class="hidden absolute top-2 right-2 p-1 rounded-md text-gray-400 dark:text-zinc-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Clear">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -93,7 +93,7 @@
             id="password"
             type="password"
             placeholder="Password"
-            class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md pl-4 pr-9 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 outline-none focus:border-violet-500 transition-colors">
+            class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md pl-3 pr-8 py-1.5 text-xs text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 outline-none focus:border-violet-500 transition-colors">
           <button id="btnEye" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors" title="Show/hide password">
             <svg id="iconEye" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
@@ -105,28 +105,29 @@
           </button>
         </div>
 
-        <button id="btnCripty" class="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-md transition-colors">
+        <button id="btnCripty" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
           Cripty
         </button>
 
-        <button id="btnTest" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-md transition-colors">
+        <button id="btnTest" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
           Test
         </button>
 
-        <button id="btnCopy" class="px-4 py-2 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 text-sm font-semibold rounded-md transition-colors">
+        <button id="btnCopy" class="px-3 py-1.5 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 text-xs font-semibold rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>
           Copy
         </button>
-
-        <a href="https://github.com/LeonardoCiaccio/Cripty" target="_blank" class="p-2 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 rounded-md transition-colors" title="Fork on GitHub">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-        </a>
 
       </div>
     </div>
 
-    <p class="text-center text-xs text-gray-400 dark:text-zinc-600 mt-6">AES encryption via CryptoJS &middot; All processing client-side</p>
+    <div class="flex items-center justify-center gap-3 mt-6">
+      <a href="https://github.com/LeonardoCiaccio/Cripty" target="_blank" class="text-gray-400 hover:text-gray-900 dark:text-zinc-500 dark:hover:text-white transition-colors" title="Fork on GitHub">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </a>
+      <p class="text-xs text-gray-400 dark:text-zinc-600">AES encryption via CryptoJS &middot; All processing client-side</p>
+    </div>
 
   </div>
 
@@ -232,6 +233,14 @@
 
     var isCripted = false;
 
+    function syncButtons() {
+      var hasSource = !!sourceEl.value.trim();
+      var hasPass   = !!document.getElementById('password').value.trim();
+      document.getElementById('btnCripty').disabled = !(hasSource && hasPass);
+      document.getElementById('btnTest').disabled   = !isCripted;
+      document.getElementById('btnCopy').disabled   = !isCripted;
+    }
+
     function syncClearBtn() {
       btnClear.classList.toggle('hidden', !sourceEl.value);
       btnSave.classList.toggle('hidden', !isCripted);
@@ -241,13 +250,17 @@
       isCripted = false;
       updateBadge();
       syncClearBtn();
+      syncButtons();
     });
+
+    document.getElementById('password').addEventListener('input', syncButtons);
 
     btnClear.addEventListener('click', function () {
       sourceEl.value = '';
       isCripted = false;
       updateBadge();
       syncClearBtn();
+      syncButtons();
       document.getElementById('fileName').classList.add('hidden');
       document.getElementById('fileName').classList.remove('flex');
     });
@@ -362,6 +375,7 @@
       isCripted = true;
       updateBadge();
       syncClearBtn();
+      syncButtons();
     });
 
     // Test

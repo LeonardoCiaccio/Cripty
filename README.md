@@ -9,7 +9,7 @@
 
 <br>
 
-![Cripty App](Cripty-App.png)
+![Cripty App](imgs/Cripty-App.png)
 
 </div>
 

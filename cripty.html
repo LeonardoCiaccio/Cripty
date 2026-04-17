@@ -13,15 +13,15 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
   <style>
-    #source::-webkit-scrollbar { width: 4px; }
-    #source::-webkit-scrollbar-track { background: transparent; }
-    #source::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 999px; }
-    #source::-webkit-scrollbar-thumb:hover { background: #52525b; }
-    .dark #source::-webkit-scrollbar-thumb { background: #3f3f46; }
-    .dark #source::-webkit-scrollbar-thumb:hover { background: #52525b; }
-    html:not(.dark) #source::-webkit-scrollbar-thumb { background: #d1d5db; }
-    html:not(.dark) #source::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-    #source { scrollbar-width: thin; scrollbar-color: #3f3f46 transparent; }
+    #source::-webkit-scrollbar { width: 6px; }
+    #source::-webkit-scrollbar-button { display: none; }
+    #source::-webkit-scrollbar-track { background: #27272a; border-radius: 999px; }
+    #source::-webkit-scrollbar-thumb { background: #71717a; border-radius: 999px; }
+    #source::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+    html:not(.dark) #source::-webkit-scrollbar-track { background: #e5e7eb; }
+    html:not(.dark) #source::-webkit-scrollbar-thumb { background: #9ca3af; }
+    html:not(.dark) #source::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+    #source { scrollbar-width: thin; scrollbar-color: #52525b #27272a; }
   </style>
 </head>
 
@@ -65,6 +65,12 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
+        </button>
+        <button id="btnSave" class="hidden absolute bottom-4 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-zinc-700/80 hover:bg-zinc-600 text-zinc-300 text-xs font-medium transition-colors" title="Save as HTML">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+          </svg>
+          Save HTML
         </button>
         <div id="dropOverlay" class="hidden absolute inset-0 rounded-md bg-violet-500/20 border-2 border-violet-500 pointer-events-none items-center justify-center">
           <span class="text-violet-600 dark:text-violet-300 font-semibold text-lg">Drop file here</span>
@@ -124,11 +130,56 @@
 
   </div>
 
+  <!-- Alert modal -->
+  <div id="alertModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-md shadow-2xl p-6 w-full max-w-sm mx-4">
+      <p id="alertMessage" class="text-sm text-gray-800 dark:text-zinc-200 mb-5"></p>
+      <div class="flex justify-end">
+        <button id="alertOk" class="px-4 py-2 text-sm font-medium rounded-md bg-violet-600 hover:bg-violet-500 text-white transition-colors">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save modal -->
+  <div id="saveModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-md shadow-2xl p-6 w-full max-w-sm mx-4">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-zinc-100 mb-1">Save as HTML</h3>
+      <p class="text-xs text-gray-500 dark:text-zinc-400 mb-4">Enter the file name or press Cancel to abort.</p>
+      <input
+        id="saveFileName"
+        type="text"
+        value="cripty-output.html"
+        class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 outline-none focus:border-violet-500 transition-colors mb-4">
+      <div class="flex justify-end gap-2">
+        <button id="saveCancel" class="px-4 py-2 text-sm font-medium rounded-md bg-gray-100 dark:bg-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200 transition-colors">Cancel</button>
+        <button id="saveConfirm" class="px-4 py-2 text-sm font-medium rounded-md bg-violet-600 hover:bg-violet-500 text-white transition-colors">Save</button>
+      </div>
+    </div>
+  </div>
+
   <script>
   (function () {
 
-    var REQUEST_JS   = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :");while(p!==null){try{var b=CryptoJS.AES.decrypt(e,p),t=b.toString(CryptoJS.enc.Utf8);if(t){eval(t);break}}catch(x){}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
-    var REQUEST_HTML = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :");while(p!==null){try{var b=CryptoJS.AES.decrypt(e,p),t=b.toString(CryptoJS.enc.Utf8);if(t){document.open();document.write(t);document.close();break}}catch(x){}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
+    var alertModal = document.getElementById('alertModal');
+    document.getElementById('alertOk').addEventListener('click', function () {
+      alertModal.classList.add('hidden');
+      alertModal.classList.remove('flex');
+    });
+    alertModal.addEventListener('click', function (e) {
+      if (e.target === alertModal) {
+        alertModal.classList.add('hidden');
+        alertModal.classList.remove('flex');
+      }
+    });
+
+    function showAlert(msg) {
+      document.getElementById('alertMessage').textContent = msg;
+      alertModal.classList.remove('hidden');
+      alertModal.classList.add('flex');
+    }
+
+    var REQUEST_JS   = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){eval(t);break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
+    var REQUEST_HTML = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){document.open();document.write(t);document.close();break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
 
     function encryptB64(text, pass) {
       return btoa(CryptoJS.AES.encrypt(text, pass).toString());
@@ -151,8 +202,8 @@
     var BADGE_LABELS = {
       'auto':         'auto',
       'js':           'JS',
-      'html-full':    'HTML page',
-      'html-partial': 'HTML snippet'
+      'html-full':    'HTML',
+      'html-partial': 'HTML'
     };
 
     function updateBadge() {
@@ -177,22 +228,70 @@
     // Live badge + clear button visibility
     var sourceEl = document.getElementById('source');
     var btnClear = document.getElementById('btnClear');
+    var btnSave  = document.getElementById('btnSave');
+
+    var isCripted = false;
 
     function syncClearBtn() {
       btnClear.classList.toggle('hidden', !sourceEl.value);
+      btnSave.classList.toggle('hidden', !isCripted);
     }
 
     sourceEl.addEventListener('input', function () {
+      isCripted = false;
       updateBadge();
       syncClearBtn();
     });
 
     btnClear.addEventListener('click', function () {
       sourceEl.value = '';
+      isCripted = false;
       updateBadge();
       syncClearBtn();
       document.getElementById('fileName').classList.add('hidden');
       document.getElementById('fileName').classList.remove('flex');
+    });
+
+    // Save as HTML
+    var saveModal    = document.getElementById('saveModal');
+    var saveFileName = document.getElementById('saveFileName');
+
+    function openSaveModal() {
+      saveFileName.value = 'cripty-output.html';
+      saveModal.classList.remove('hidden');
+      saveModal.classList.add('flex');
+      setTimeout(function () { saveFileName.select(); }, 50);
+    }
+
+    function closeSaveModal() {
+      saveModal.classList.add('hidden');
+      saveModal.classList.remove('flex');
+    }
+
+    function doSave() {
+      var name = saveFileName.value.trim();
+      if (!name) return;
+      if (!name.endsWith('.html')) name += '.html';
+      var blob = new Blob([sourceEl.value], { type: 'text/html' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      closeSaveModal();
+    }
+
+    btnSave.addEventListener('click', openSaveModal);
+    document.getElementById('saveCancel').addEventListener('click', closeSaveModal);
+    document.getElementById('saveConfirm').addEventListener('click', doSave);
+
+    saveFileName.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') doSave();
+      if (e.key === 'Escape') closeSaveModal();
+    });
+
+    saveModal.addEventListener('click', function (e) {
+      if (e.target === saveModal) closeSaveModal();
     });
 
     // Eye toggle
@@ -241,8 +340,8 @@
     document.getElementById('btnCripty').addEventListener('click', function () {
       var pass   = document.getElementById('password').value.trim();
       var source = document.getElementById('source').value.trim();
-      if (!pass)   return alert('Password required!');
-      if (!source) return alert('Source required!');
+      if (!pass)   return showAlert('Password required!');
+      if (!source) return showAlert('Source required!');
 
       var mode = detectMode(source);
       var content, req;
@@ -260,7 +359,9 @@
 
       var gen = encryptB64(content, pass);
       sourceEl.value = "<div id='protected' style='display:none'>" + gen + "<\/div><script>" + req + "<\/script>";
+      isCripted = true;
       updateBadge();
+      syncClearBtn();
     });
 
     // Test

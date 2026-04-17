@@ -6,6 +6,25 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Cripty | Code Protector</title>
+  <meta name="description" content="Cripty lets you protect JavaScript and HTML code with AES password encryption. Paste your code, set a password, and generate a self-decrypting file — all client-side.">
+  <meta name="keywords" content="cripty, javascript encryption, html encryption, AES, password protect code, code obfuscation, client-side encryption">
+  <meta name="author" content="Leonardo Ciaccio">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://leonardociaccio.github.io/Cripty/">
+  <meta property="og:title" content="Cripty | Code Protector">
+  <meta property="og:description" content="Protect your JavaScript and HTML code with AES password encryption. Self-decrypting output, fully client-side.">
+  <meta property="og:image" content="https://leonardociaccio.github.io/Cripty/Cripty-App.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://leonardociaccio.github.io/Cripty/">
+  <meta name="twitter:title" content="Cripty | Code Protector">
+  <meta name="twitter:description" content="Protect your JavaScript and HTML code with AES password encryption. Self-decrypting output, fully client-side.">
+  <meta name="twitter:image" content="https://leonardociaccio.github.io/Cripty/Cripty-App.png">
+
   <link rel="icon" href="imgs/favicon.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -181,7 +200,7 @@
       alertModal.classList.add('flex');
     }
 
-    var VERSION            = '1.173';
+    var VERSION            = '2.0';
     var COPY_FEEDBACK_MS   = 1500;
     var MODAL_FOCUS_DELAY  = 50;
 
@@ -373,7 +392,8 @@
       }
 
       var gen = encryptB64(content, pass);
-      sourceEl.value = "<div id='protected' style='display:none'>" + gen + "<\/div><script>" + req + "<\/script>";
+      var sig = "\n<!-- Cripty v" + VERSION + " | AES encrypted output | Author: Leonardo Ciaccio | https://github.com/LeonardoCiaccio/Cripty -->";
+      sourceEl.value = "<div id='protected' style='display:none'>" + gen + "<\/div><script>" + req + "<\/script>" + sig;
       isCripted = true;
       updateBadge();
       syncClearBtn();

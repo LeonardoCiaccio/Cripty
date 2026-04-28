@@ -42,8 +42,8 @@ Cripty automatically detects the type of content:
 | Content | Detected as | Execution method |
 |---|---|---|
 | Does not start with `<` | **JS** | `eval()` |
-| Starts with `<html>` or `<!DOCTYPE>` | **HTML page** | `document.write()` |
-| Starts with `<` (partial markup) | **HTML snippet** | Wrapped in `<html><body>` then `document.write()` |
+| Starts with `<html>` or `<!DOCTYPE>` | **HTML page** | Blob URL via `URL.createObjectURL` |
+| Starts with `<` (partial markup) | **HTML snippet** | Wrapped in `<html><body>` then Blob URL |
 
 ---
 
@@ -62,7 +62,7 @@ Cripty automatically detects the type of content:
 
 ## Encryption
 
-Cripty uses **AES symmetric encryption** (via CryptoJS 3.x). The encrypted payload is Base64-encoded and embedded in a hidden `<div>`. A self-contained decryption script is injected alongside it — the only external dependency it loads at runtime is CryptoJS from cdnjs.
+Cripty uses **AES symmetric encryption** (via CryptoJS 4.x). The encrypted payload is Base64-encoded and embedded in a hidden `<div>`. A self-contained decryption script is injected alongside it — the only external dependency it loads at runtime is CryptoJS from cdnjs.
 
 ---
 

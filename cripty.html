@@ -30,7 +30,7 @@
   <script>
     tailwind.config = { darkMode: 'class' }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
   <style>
     #source::-webkit-scrollbar { width: 6px; }
     #source::-webkit-scrollbar-button { display: none; }
@@ -204,8 +204,8 @@
     var COPY_FEEDBACK_MS   = 1500;
     var MODAL_FOCUS_DELAY  = 50;
 
-    var REQUEST_JS   = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){eval(t);break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
-    var REQUEST_HTML = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){document.open();document.write(t);document.close();break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
+    var REQUEST_JS   = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){eval(t);break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
+    var REQUEST_HTML = '!function(){var s=document.createElement("script");s.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"),s.onload=function(){s.parentNode.removeChild(s);var e=atob(document.getElementById("protected").innerHTML),p=prompt("Password :"),t="";while(p!==null){try{t=CryptoJS.AES.decrypt(e,p).toString(CryptoJS.enc.Utf8)}catch(x){t=""}if(t){var b=new Blob([t],{type:"text/html"});var u=URL.createObjectURL(b);location.replace(u);break}p=prompt("Wrong password. Press Esc to exit :")}},document.body.append(s)}();';
 
     function encryptB64(text, pass) {
       return btoa(CryptoJS.AES.encrypt(text, pass).toString());
@@ -403,10 +403,10 @@
     document.getElementById('btnTest').addEventListener('click', function () {
       var source = document.getElementById('source').value.trim();
       if (!source) return;
-      var w = window.open('');
-      w.document.open();
-      w.document.write('<html><head><title>Cripty | Test<\/title><\/head><body>' + source + '<\/body><\/html>');
-      w.document.close();
+      var html = '<html><head><title>Cripty | Test<\/title><\/head><body>' + source + '<\/body><\/html>';
+      var blob = new Blob([html], { type: 'text/html' });
+      var url  = URL.createObjectURL(blob);
+      window.open(url);
     });
 
     document.getElementById('btnCopy').addEventListener('click', function () {
